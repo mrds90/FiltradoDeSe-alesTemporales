@@ -1,0 +1,4 @@
+Video explicativo:
+	https://youtu.be/O_-Zfkf7dHI
+Repositorio
+	https://github.com/mrds90/FiltradoDeSe-alesTemporales.git
