@@ -50,18 +50,30 @@ bp_a_den=[1,-1.8704724177979164, 0.8816185923631891]
 # pasa banda orden 1 con corte en 5 y 15Hz para quedarme con el aritmatica de punto fijo
 # 485, 0, -485, 30646, -14444 DF1
 # 31042, 0, -31042, 30646, -14444 DF2
+# b(0.0592,0.00,-0.0592) - a (1,1.87,-0.882) #en el vídeo no tenía estos coeficiente, si uso estos coeficientes que µModeler reporta si funciona y responde muy similar.
+# ------------------------------------coeficientes de µmodeler:---------------------------------------
+    #     short filter1_coefficients[5] = 
+    # {
+    # // Scaled for a 16x16:64 Direct form 1 IIR filter with: 
+    # // Feedback shift = 14
+    # // Output shift = 14
+    # // Input  has a maximum value of 1, scaled by 2^15
+    # // Output has a maximum value of 1.1110299657053153, scaled by 2^14
 
-# fixed_b=[31042, 0, -31042]
-# fixed_a=[1,30646, -14444] #a[0] (no se usa) lo relleno con cero para que los indices se corresponda con la convención de nombre.
-# intbits = np.ceil(np.log2(max(max(abs(np.array(bp_a))), max(abs(np.array(bp_b))))))
-# fm = FXfamily(16,intbits)
-# FXnumv = np.vectorize(FXnum)
-# floatv = np.vectorize(float)
+    #     485, 0, -485, 30646, -14444// b0 Q13(0.0592), b1 Q13(0.00), b2 Q13(-0.0592), a1 Q14(1.87), a2 Q14(-0.882)
 
-# bp_b = floatv(FXnumv(fixed_b,fm))
-# bp_a = floatv(FXnumv(fixed_a,fm))
-# bp_a_den=bp_a*-1
-# bp_a_den[0]=1
+    # };
+# ---------------------------------------------------------------------------
+fixed_b=[0.0592,0.00,-0.0592]
+fixed_a=[1,1.87,-0.882] #a[0] (no se usa) lo relleno con cero para que los indices se corresponda con la convención de nombre.
+intbits = np.ceil(np.log2(max(max(abs(np.array(bp_a))), max(abs(np.array(bp_b))))))
+fm = FXfamily(16,intbits)
+FXnumv = np.vectorize(FXnum)
+floatv = np.vectorize(float)
+bp_b = floatv(FXnumv(fixed_b,fm))
+bp_a = floatv(FXnumv(fixed_a,fm))
+bp_a_den=bp_a*-1
+bp_a_den[0]=1
 
 
 ######################## RESPUESTA DEL FILTRO ##########################
